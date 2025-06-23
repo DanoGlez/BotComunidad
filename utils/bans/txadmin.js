@@ -44,12 +44,14 @@ function load() {
     try {
       const raw = fs.readFileSync(bansFilePath, 'utf8');
       const data = JSON.parse(raw);
+      // console.log('DEBUG TXADMIN: acciones recibidas:', data.actions);
       // filtrar acciones
-      const actions = (data.actions || []).filter(a => a.type === 'ban' && matchesReason(a.reason) && isBanActive(a));
+      const actions = (data.actions || []).filter(a => a.type === 'ban' && matchesReason(a.reason));
+      // console.log('DEBUG TXADMIN: acciones tras filtrar por razón:', actions);
       cache = actions;
       lastLoad = now;
       indexData = buildIndex(actions);
-      console.log('Índice TxAdmin actualizado.');
+      // console.log('Índice TxAdmin actualizado.');
     } catch (err) {
       console.error('Error al cargar o procesar playersDB.json (txadmin):', err);
       cache = indexData = null;
@@ -59,7 +61,17 @@ function load() {
 
 function find(id) {
   if (!indexData) return null;
-  return indexData[id] || null;
+  // Probar ID tal cual y con prefijos comunes
+  const prefixes = ['license:', 'steam:', 'discord:', 'live:', 'xbl:'];
+  const candidates = [id, ...prefixes.map(p => `${p}${id}`)];
+  // console.log('DEBUG TXADMIN find: buscando posibles IDs', candidates);
+  for (const key of candidates) {
+    if (indexData[key]) {
+      // console.log(`DEBUG TXADMIN find: encontrado en ${key}`);
+      return indexData[key];
+    }
+  }
+  return null;
 }
 
 module.exports = { load, find };
