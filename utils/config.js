@@ -21,6 +21,11 @@ const banPaths = banSources.reduce((acc, src) => {
   return acc;
 }, {});
 
+// Leer razones de baneo válidas desde .env (o usar lista por defecto)
+const validReasons = (process.env.BANS_VALID_REASONS || 'hacker,cheeter,cheater,cheeater,refuse,chetos,spoofer,no recoil,noclip,spoofed,aimbot,cheats,cheat')
+  .split(',')
+  .map(r => r.trim().toLowerCase());
+
 if (!token) {
   console.error('⚠️ DISCORD_TOKEN no definido en .env.');
   process.exit(1);
@@ -31,3 +36,4 @@ module.exports = { token, clientId, guildId };
 // Exportar configuración de fuentes y rutas
 module.exports.banSources = banSources;
 module.exports.banPaths = banPaths;
+module.exports.validReasons = validReasons;

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { banPaths, banSources } = require('../config');
+const { banPaths, banSources, validReasons } = require('../config');
 
 const bansFilePath = banPaths.txadmin;
 let cache = null;
@@ -18,7 +18,6 @@ function isBanActive(ban) {
 
 function matchesReason(reason) {
   if (!reason) return false;
-  const validReasons = require('./anticheat').validReasons || [];
   const reasonLower = reason.toLowerCase();
   return validReasons.some(r => reasonLower.includes(r));
 }
