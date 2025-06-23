@@ -1,0 +1,24 @@
+{
+  "name": "botcomundad",
+  "version": "2.0.0",
+  "description": "Bot modular de Discord para la verificación de baneos en múltiples fuentes (Anticheat, TxAdmin, etc.)",
+  "main": "index.js",
+  "author": "DanoGlez",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danoglez/BotComundad.git"
+  },
+  "dependencies": {
+    "discord-api-types": "^0.37.103",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  }
+}
