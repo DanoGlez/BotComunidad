@@ -1,5 +1,7 @@
 const fs = require('fs');
 const { banPaths, banSources, validReasons } = require('../config');
+// Construir regex de razones válidas con límites de palabra
+const reasonsRegex = new RegExp(`\\b(${validReasons.map(r => r.replace(/[\\-\\/\\\\\\^\\$\\*\\+\\?\\.\\(\\)\\|\\[\\]\\{\\}]/g, "\\$&")).join("|")})\\b`, 'i');
 
 const bansFilePath = banPaths.txadmin;
 let cache = null;
@@ -17,9 +19,7 @@ function isBanActive(ban) {
 }
 
 function matchesReason(reason) {
-  if (!reason) return false;
-  const reasonLower = reason.toLowerCase();
-  return validReasons.some(r => reasonLower.includes(r));
+  return typeof reason === 'string' && reasonsRegex.test(reason);
 }
 
 function buildIndex(bansList) {
